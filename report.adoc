@@ -42,12 +42,13 @@ Implementation team members include:
 
 == Deliverables
 
-Phase 1:: Trust store cryptographic primitive layer implementation (see <<confium-impl>>)
+Phase 1:: Confium cryptographic primitive layer implementation (see <<confium-impl>>)
 
-Phase 2:: Trust store keystore layer implementation (see <<keystore>>)
+Phase 2 and Phase 3:: RNP cryptographic mapping and keystore layer implementation (see <<rnp-impl>>)
 
-Phase 3:: Trust store threshold cryptography module implementation (see <<crypto-module>>)
-
+NOTE: The original Phase 2 and Phase 3 scopes have been amended to support
+implementation of the cryptographic mapping and keystore layers in RNP, instead
+as originally planned within RNP Confium due to urgent community needs.
 
 
 [[confium-impl]]
@@ -212,14 +213,31 @@ Please refer to https://github.com/confium/confium/ for details on how to run
 tests.
 
 
+[[confium-summary]]
+=== Summary
 
-[[keystore]]
-== Keystore layer implementation (RNP)
+The full architecture of Confium has been implemented, which supports
+functionality across multiple language programming interfaces.
+
+A test suite that demonstrates Confium multi-language interoperability has been
+developed.
+
+
+[[rnp-impl]]
+== Implementation of RNP cryptographic mapping and keystore layers
 
 === Background and goals
 
-The keystore layer was implemented separate from RNP Confium core, but in RNP in
-order to guide development of a unified keystore layer.
+Instead of implementing the unified keystore layer in Confium, the RNP Confium
+team has instead tackled the implementation of the cryptographic mapping and
+keystore layers in RNP.
+
+This work was performed due to an urgent community need of using OpenPGP within
+the Red Hat Enterprise Linux ecosystems, including the RHEL 8, RHEL 9 and Fedora
+distributions.
+
+This work also provides guiding experience for the team in implementing the
+Confium unified keystore layer.
 
 https://www.rnpgp.org[RNP] is a high-performance OpenPGP library implemented in
 C++. RNP originally only utilized the https://botan.randombit.net[Botan]
@@ -278,7 +296,7 @@ approved NLNet project is consistent with its intention to protect those with a
 strong need of security and privacy.
 
 
-=== RNP cryptographic mapping layer
+=== RNP cryptographic mapping and keystore layers
 
 For this purpose, RNP needed to generalize its cryptographic usage to support
 multiple cryptographic libraries to utilize existing cryptographic libraries
@@ -290,6 +308,12 @@ priority, and subsequently OpenSSL 1.1.1 for RHEL 8 compatibility.
 
 The RNP team has developed a cryptographic mapping layer in C++ that allows RNP
 to utilize different cryptographic libraries via the same codebase.
+
+Cryptographic primitives such as keys and hashes from the cryptographic keystore
+layer are mapped into unified objects, which allows RNP to utilize the same
+keystore backends to store such information (RNP supports multiple keystore
+types).
+
 The resulting architecture of the RNP crypto-primitive and keystore layers are
 shown in the following figure.
 
@@ -309,7 +333,7 @@ Botan or OpenSSL exists, and selects the corresponding backend code.
 The RNP cryptographic mapping layer currently supports the following
 cryptographic libraries:
 
-*  Botan
+* Botan
 * OpenSSL 1.1.1
 * OpenSSL 3.0
 
@@ -369,19 +393,19 @@ Subsequently, RNP expanded support to OpenSSL 1.1.1 in 0.16.2 for RHEL 8
 
 The resulting packages were adopted and republished by:
 
-* Mozilla
+* https://www.mozilla.com[Mozilla]
 ** https://bugzilla.mozilla.org/show_bug.cgi?id=1794157[Mozilla Bugzilla #1794157: Cannot add PGP keys to OpenPGP manager])
 * https://rpms.remirepo.net[Remi's RPM repository]
 ** https://mobile.twitter.com/RemiRepository/status/1585628031762452481[Remi's Twitter announcement]
-* Red Hat
+* https://www.redhat.com[Red Hat]
 ** https://bugzilla.redhat.com/show_bug.cgi?id=2138353[Red Hat Bugzilla #2138353: "Review Request: rnp - OpenPGP (RFC4880) tools [NEEDINFO\]]
 ** https://bugzilla.redhat.com/attachment.cgi?id=1920830[Red Hat Bugzilla Attachment #1920830: Series of patches to backport RNP v0.16.2 to Thunderbird ESR 102 by Kai Engert]
 
 NOTE: RNP availability as an official RHEL package for RHEL 8 and RHEL 9 is
 currently being reviewed.
 
-
-=== Conclusion
+[[rnp-summary]]
+=== Summary
 
 The resulting work achieves the following:
 
@@ -395,3 +419,13 @@ depend on highly secure Linux systems.
 
 Ribose is currently planning to issue a press release on this work together with
 OpenSSL and Red Hat, which would include NLNet as a major sponsor of this work.
+
+
+== Conclusion
+
+The RNP Confium team has completed the following tasks as part of the NLNet
+"RNP Confium" project:
+
+* RNP Confium core with a cryptographic primitive layer (see <<confium-summary>>)
+
+* RNP cryptographic mapping and keystore layer implementation (see <<rnp-summary>>)
