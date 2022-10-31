@@ -180,6 +180,19 @@ NOTE: Usage of the Ruby binding depends on the installation/availability of
 Confium core and its crypto-primitive plugins.
 
 
+==== Cross-platform support
+
+Confium as implemented supports the following platforms:
+
+* Linux (Ubuntu and Debian)
+* macOS 12
+* Windows x64
+
+The code demonstrating support can be seen within the test suite
+(<<confium-test-suite>>).
+
+
+[[confium-test-suite]]
 === Testing details
 
 A test suite has been implemented through the
